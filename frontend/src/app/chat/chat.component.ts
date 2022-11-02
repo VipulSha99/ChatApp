@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit {
         // });
         this.token = params.accessToken;
         this.payload = jwt_decode(this.token);
-        console.log(this.payload,params.accessToken);
+        console.log(this.payload);
         this.username =
           this.payload?.user?.firstName ?? this.payload?.user?.username;
           this.channelUUID = environment.CHAT_ROOM;
@@ -63,8 +63,6 @@ export class ChatComponent implements OnInit {
     upgrade: false,
   };
   
-
-  socket = io(environment.SOCKET_ENDPOINT, this.socketIOOpts);
 
   enterToken() {
     this.userHttpService.getUserTenantId(this.token).subscribe(data => {
@@ -101,12 +99,13 @@ export class ChatComponent implements OnInit {
   }
 
   subcribeToNotifications() {
-    this.socket.on('connect', () => {
+    const socket = io(environment.SOCKET_ENDPOINT, this.socketIOOpts);
+    socket.on('connect', () => {
       const channelsToAdd: string[] = [this.channelUUID];
-      this.socket.emit('subscribe-to-channel', channelsToAdd);
+      socket.emit('subscribe-to-channel', channelsToAdd);
     });
 
-    this.socket.on('userNotif', message => {
+    socket.on('userNotif', message => {
       console.log(message); //NOSONAR
       const temp: ChatMessage = {
         body: message.body,

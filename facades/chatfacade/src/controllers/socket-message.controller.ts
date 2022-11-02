@@ -123,7 +123,6 @@ export class PubnubMessageController {
         ],
       },
     });
-    console.log("hello bhai",notif);
     await this.notifService.createNotification(notif, token);
 
     return msg;
