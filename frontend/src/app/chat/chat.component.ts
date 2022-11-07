@@ -2,7 +2,7 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NgxNotificationService} from 'ngx-notification';
 import {environment} from '../../environments/environment';
 import {Chat, ChatMessage} from '../chat.model';
@@ -17,15 +17,15 @@ import { AuthService } from '../auth.service';
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
-  styles: [
-    `
-      /* :host {
-        display: flex;
-      } */
-    `,
-  ],
+  // styles: [
+  //   `
+  //     :host {
+  //       display: flex;
+  //     }
+  //   `,
+  // ],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent {
   payload?: AuthPayload;
   username?: string;
   constructor(
@@ -33,14 +33,9 @@ export class ChatComponent implements OnInit {
     private readonly ngxNotificationService: NgxNotificationService,
     private route: ActivatedRoute,
     private authenticationService: AuthService,
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.route.queryParams.subscribe(param => {
       this.authenticationService.getToken(param.code).subscribe(params =>{
-        // this.router.navigate(['chat'], {
-        //   queryParams: {code: res.accessToken},
-        // });
         this.token = params.accessToken;
         this.payload = jwt_decode(this.token);
         console.log(this.payload);

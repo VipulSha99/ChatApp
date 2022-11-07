@@ -60,9 +60,9 @@ export class PubnubMessageController {
   })
   async find(
     // sonarignore:start
-    @inject(AuthenticationBindings.CURRENT_USER) user: IAuthUserWithPermissions,
     @param.header.string('Authorization') token: string,
     @param.query.string('ChannelID') channelID?: string,
+    // @inject(AuthenticationBindings.CURRENT_USER) user: IAuthUserWithPermissions,
     @param.filter(SocketMessage) filter?: Filter<SocketMessage>,
     // sonarignore:end
   ): Promise<SocketMessage[]> {
@@ -149,7 +149,7 @@ export class PubnubMessageController {
         },
       },
     })
-    messageRecipient: Partial<SocketMessageRecipient>, //NOSONAR
+    // messageRecipient: Partial<SocketMessageRecipient>, //NOSONAR
     @param.query.object('where', getWhereSchemaFor(SocketMessageRecipient))
     where?: Where<SocketMessageRecipient>, //NOSONAR
   ): Promise<SocketMessageRecipient> {

@@ -1,5 +1,5 @@
 {
-  "name": "@sourceloop/chat-notif-example-facade-socket",
+  "name": "@sourceloop/chat-facade",
   "version": "0.1.8",
   "description": "facade",
   "keywords": [
