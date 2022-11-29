@@ -13,4 +13,6 @@ export interface AuthPayload {
   mfa?: boolean;
   userId?: string;
   user?: User;
+  firstName?: string;
+  username?: string;
 }

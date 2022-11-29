@@ -34,7 +34,7 @@ describe('AuthService', () => {
 
   it("should get access token on calling getToken function", fakeAsync(() => {
     service.getToken(mockCode).subscribe(token => {
-      expect(JSON.stringify(mocktoken)).toEqual(JSON.stringify(mocktoken))
+      expect(JSON.stringify(token)).toEqual(JSON.stringify(mocktoken))
     });
     let req = httpTestingController.expectOne(tokenUrl);
     expect(req.request.method).toEqual("POST");

@@ -38,9 +38,8 @@ export class ChatComponent {
       this.authenticationService.getToken(param.code).subscribe(params =>{
         this.token = params.accessToken;
         this.payload = jwt_decode(this.token);
+        this.username = this.payload?.username ?? this.payload?.firstName;
         console.log(this.payload);
-        this.username =
-          this.payload?.user?.firstName ?? this.payload?.user?.username;
           this.channelUUID = environment.CHAT_ROOM;
           this.enterToken();
       })
@@ -80,10 +79,10 @@ export class ChatComponent {
           subject: d.subject,
           channelType: '0',
           reply: false,
-          sender: 'sender',
+          sender: d.subject,
         };
         if (d.createdBy === this.senderUUID) {
-          temp.sender = 'User';
+          temp.sender = this.username!;
           temp.reply = true;
         }
         this.messages.push(temp);
@@ -107,9 +106,9 @@ export class ChatComponent {
         subject: message.subject,
         channelType: '0',
         reply: false,
-        sender: 'sender',
+        sender: message.subject,
       };
-      if(message.subject != this.senderUUID){
+      if(message.subject != this.username){
         this.ngxNotificationService.sendMessage('You got a message', 'success', 'top-right');
         this.messages.push(temp);
       }
@@ -117,24 +116,24 @@ export class ChatComponent {
   }
 
   // sonarignore:start
-  sendMessage(event: {message: string}, userName: string, avatar: string) {
+  sendMessage(event: {message: string}, avatar: string) {
     // sonarignore:end
     if (!this.inRoom) {
       return;
     }
     const chatMessage: ChatMessage = {
       body: event.message,
-      subject: 'new message',
+      subject: this.username!,
       toUserId: this.channelUUID,
       channelId: this.channelUUID,
       channelType: '0',
       reply: true,
-      sender: userName,
+      sender: this.username!,
     };
 
     const dbMessage: Chat = {
       body: event.message,
-      subject: this.senderUUID,
+      subject: this.username!,
       toUserId: this.channelUUID,
       channelId: this.channelUUID,
       channelType: '0',
